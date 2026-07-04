@@ -6,6 +6,8 @@ import { ProductsDashboardComponent } from "./shared/component/products-dashboar
 import { FairsDashboardComponent } from "./shared/component/fairs-dashboard/fairs-dashboard.component";
 import { ProductFormComponent } from "./shared/component/products-dashboard/product-form/product-form.component";
 import { ProductComponent } from "./shared/component/products-dashboard/product/product.component";
+import { UserFormComponent } from "./shared/component/user-dashboard/user-form/user-form.component";
+import { UserDetailsComponent } from "./shared/component/user-dashboard/user-details/user-details.component";
 
 
 
@@ -23,9 +25,22 @@ const routes:Routes=[
     },
     
     {
-        path:'user',
+        path:'users',
         component:UserDashboardComponent
     },
+ {
+        path:'users/addUser',
+        component:UserFormComponent
+    },
+ {
+        path:'user/:userId',
+        component:UserDetailsComponent
+    },
+     {
+        path:'user/:userId/edit',
+        component:UserFormComponent
+    },
+
 
     {
         path:'products',

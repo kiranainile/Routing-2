@@ -16,6 +16,7 @@
       <li
         *ngFor="let product of products"
         [routerLink]="['/products', product.pid]"
+         [queryParams]="{cr:product.canReturn}"
         class="list-group-item">
 
         {{ product.pname }}

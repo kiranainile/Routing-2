@@ -1,0 +1,16 @@
+mat-card{
+    width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+label{
+    font-weight: 700;
+}
+
+ form {
+  .ng-invalid.ng-touched,
+  .ng-invalid.ng-dirty {
+    border: 2px solid red;
+  }
+}

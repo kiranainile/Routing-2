@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
+
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -19,8 +21,12 @@ import { FairsDashboardComponent } from './shared/component/fairs-dashboard/fair
 import { ProductComponent } from './shared/component/products-dashboard/product/product.component';
 import { ProductFormComponent } from './shared/component/products-dashboard/product-form/product-form.component';
 import { GetConfirmationComponent } from './shared/component/get-confirmation/get-confirmation.component';
+import { MatCardModule } from '@angular/material/card';
+
 
 import { AppRoutingModule } from './app-routing.module';
+import { UserFormComponent } from './shared/component/user-dashboard/user-form/user-form.component';
+import { UserDetailsComponent } from './shared/component/user-dashboard/user-details/user-details.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +38,9 @@ import { AppRoutingModule } from './app-routing.module';
     FairsDashboardComponent,
     ProductComponent,
     ProductFormComponent,
-    GetConfirmationComponent
+    GetConfirmationComponent,
+    UserFormComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +49,9 @@ import { AppRoutingModule } from './app-routing.module';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
+    MatChipsModule, 
+    MatCardModule,
+  
 
     MatSnackBarModule,
     MatDialogModule,

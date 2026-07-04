@@ -1,0 +1,145 @@
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IUser } from 'src/app/shared/module/users';
+import { SnackBarService } from 'src/app/shared/service/snackbar.service';
+import { UserService } from 'src/app/shared/service/user.service';
+
+@Component({
+  selector: 'app-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.css']
+})
+export class UserFormComponent implements OnInit {
+userForm!:FormGroup
+isInEditMode:boolean=false
+editUser!:IUser;
+userId!:string
+
+  constructor(
+    private _userService:UserService,
+    private _snackbar:SnackBarService,
+    private _router:Router,
+    private _routes:ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.createUserForm()
+    this.addSkillControl()
+    this.permannentAddHandler()
+    this.isAddSameHandler()
+
+    this.userId =this._routes.snapshot.paramMap.get('userId')!
+    if(this.userId){
+      this._userService.fetchUserById(this.userId)
+      .subscribe({
+        next:res=>{
+         this.editUser=res;
+         this.userForm.patchValue(this.editUser)
+        }
+      })
+
+    }
+
+  }
+
+
+  permannentAddHandler(){
+    
+   this.formControls['address'].get('current')?.valueChanges
+   .subscribe(val=>{
+    if(this.formControls['address'].get('current')?.valid){
+      this.formControls['isAddSame'].enable()
+    }else{
+      this.formControls['isAddSame'].reset()
+      this.formControls['isAddSame'].disable()
+    }
+
+   })
+
+  }
+
+  isAddSameHandler(){
+    
+   this.formControls['isAddSame'].valueChanges
+   .subscribe(val=>{
+    if(val){
+      let currentAdd=this.formControls['address'].get('current')?.value;
+      this.formControls['address'].get('permanent')?.patchValue(currentAdd)
+      this.formControls['address'].get('permanent')?.disable()
+    }else{
+      this.formControls['address'].get('permanent')?.reset()
+        this.formControls['address'].get('permanent')?.enable()
+    }
+
+   })
+    
+
+  }
+
+
+  createUserForm(){ 
+    this.userForm=new FormGroup({
+      
+       userName:new FormControl(null,[Validators.required]),
+       userRole:new FormControl('Candidate'),
+        profileDescription:new FormControl(null,[Validators.required]),
+        profileImage:new FormControl(null,[Validators.required]),
+        experienceYears:new FormControl(null,[Validators.required]),
+        isActive:new FormControl(null,[Validators.required]),
+        isAddSame:new FormControl({value:null,disabled:true},[Validators.required]),
+        address:new FormGroup({
+          current:new FormGroup({
+            city:new FormControl(null,[Validators.required]),
+            state:new FormControl(null,[Validators.required]),
+            country:new FormControl('India'),
+            zipcode:new FormControl(null,[Validators.required]),
+          }),
+        
+          permanent:new FormGroup({
+              city:new FormControl(null,[Validators.required]),
+            state:new FormControl(null,[Validators.required]),
+            country:new FormControl(''),
+            zipcode:new FormControl(null,[Validators.required]),
+          })
+        }),
+          skills:new FormArray([]),
+
+    })
+  }
+
+ addSkillControl(){
+
+ if(this.formControls['skills'].valid){
+
+   let skillControl =new FormControl(null,[Validators.required])
+  this.skillsArr.push(skillControl)
+ }
+ }
+
+  get formControls(){
+    return this.userForm.controls
+
+  }
+  get skillsArr(){
+    return this.formControls['skills']as FormArray
+  }
+  onUserAdd(){
+    if(this.userForm.invalid){
+      this.userForm.markAllAsTouched()
+    }else{
+      let UserDetails: IUser={...this.userForm.getRawValue(),userId:Date.now().toString()};
+          console.log(UserDetails);
+      this._userService.addUser(UserDetails)
+      .subscribe({
+        next:res=>{
+          this._snackbar.openSnackBar(res.msg);
+          this._router.navigate(['/users'],)
+        },
+        error:err=>{
+          this._snackbar.openSnackBar(err);
+        }
+      })
+    }
+  }
+}
