@@ -8,6 +8,7 @@ import { Ires, IUser } from "../module/users";
 })
 
 export class UserService{
+  
    userArr: Array <IUser>= [
   {
     userName: 'kiran Ainile',
@@ -88,6 +89,32 @@ addUser(user:IUser):Observable<Ires<IUser>>{
   })
 
 }
+
+updateUser(user:IUser){
+  let getIndex=this.userArr.findIndex(u=>u.userId ===user.userId)
+  this.userArr[getIndex]=user
+  return of({
+    msg:`The user with is ${user.userId} s updated successfully...!!!`,
+    data:user
+  })
+
+}
+
+
+
+
+  removeUserById(id:string):Observable<Ires<IUser>>{
+            let getIndex=this.userArr.findIndex(p=>p.userId ===id)
+            let user=this.userArr.splice(getIndex,1)
+            return of({
+                   msg:`The new product with id ${user[0].userId} is removed successfully....!!!`,
+           
+                   data:user[0]
+
+            })
+
+        }
+         
 
 }
 

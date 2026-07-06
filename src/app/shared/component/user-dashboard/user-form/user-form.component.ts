@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from 'src/app/shared/module/users';
+import { FormUtilityService } from 'src/app/shared/service/form-utility.service';
 import { SnackBarService } from 'src/app/shared/service/snackbar.service';
 import { UserService } from 'src/app/shared/service/user.service';
+// import { IUser } from 'src/app/shared/models/user';
+// import { FormUtilityService } from 'src/app/shared/services/form-utility.service';
+// import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+// import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-user-form',
@@ -20,31 +25,50 @@ userId!:string
     private _userService:UserService,
     private _snackbar:SnackBarService,
     private _router:Router,
-    private _routes:ActivatedRoute
+    private _routes:ActivatedRoute,
+    private _formutility:FormUtilityService
   ) { }
 
   ngOnInit(): void {
     this.createUserForm()
     this.addSkillControl()
-    this.permannentAddHandler()
+    this.permanentAddHandler()
     this.isAddSameHandler()
+    this.patchUserDetails()
 
+  }
+
+  patchUserDetails(){
+    
     this.userId =this._routes.snapshot.paramMap.get('userId')!
     if(this.userId){
+      this.isInEditMode=true
       this._userService.fetchUserById(this.userId)
       .subscribe({
         next:res=>{
          this.editUser=res;
-         this.userForm.patchValue(this.editUser)
+         this.userForm.patchValue({...this.editUser})
+         if(res.userRole === "Candidate"){
+          this.userForm.disable()
+         }else{
+          this.userForm.enable()
+         }
+             this._formutility.pathFormArr(res.skills,this.skillsArr)
+           
+             if(this.formControls['address'].get('current')?.valid){
+              this.formControls['isAddSame'].enable()
+              this.formControls['address'].get('permanent')?.patchValue(this.editUser.address.permanent)
+
+           }  
+
         }
       })
 
     }
-
   }
 
 
-  permannentAddHandler(){
+  permanentAddHandler(){
     
    this.formControls['address'].get('current')?.valueChanges
    .subscribe(val=>{
@@ -58,6 +82,16 @@ userId!:string
    })
 
   }
+
+patchskills(dataArr:Array<any>,formArr:FormArray){
+   this.skillsArr.clear()
+         this.editUser.skills.forEach(skill=>{
+          let skillControl=new FormControl(skill,[Validators.required])
+          this.skillsArr.push(skillControl)
+
+         })
+}
+
 
   isAddSameHandler(){
     
@@ -142,4 +176,23 @@ userId!:string
       })
     }
   }
+
+
+  onUserUpdate(){
+     if(this.userForm.invalid){
+      this.userForm.markAllAsTouched()
+
+  }else{
+    let UPDATED_USER:IUser={...this.userForm.value,userId: this.editUser.userId}
+    this._userService.updateUser(UPDATED_USER)
+    .subscribe({
+      next:res=>{
+        this._snackbar.openSnackBar(res.msg)
+      },
+      error:err=>{
+        this._snackbar.openSnackBar(err)
+      }
+    })
+  }
+}
 }

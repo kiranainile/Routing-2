@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card  class="mt-0 mb-3">
   <mat-card-content>
 
     <h3 class="fw-weight-bold">
@@ -36,7 +36,7 @@
           class="form-control"></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mt-2">
         <label for="profileImage">Profile Image</label>
         <input
           type="text"
@@ -60,7 +60,7 @@
       </div>
 
       <div formArrayName="skills">
-        <h6>Skills</h6>
+        <h6 class="mt-3">Skills</h6>
 
         <div class="row mb-2" *ngFor="let skill of skillsArr.controls; let i = index">
 
@@ -86,7 +86,6 @@
         <div class="row">
           <div class="col-12">
             <button 
-            [disabled]="formControls['skills'].invalid"
             (click)="addSkillControl()"
             type="button"
             mat-raised-button
@@ -101,8 +100,8 @@
           id="isActive"
           formControlName="isActive"
           class="form-control">
-          <option [ngValue]="true">Active</option>
-          <option [ngValue]="false">In-Active</option>
+          <option [ngValue]="true">Yes</option>
+          <option [ngValue]="false">No</option>
         </select>
       </div>
 
@@ -199,27 +198,24 @@
         </div>
 
       </div>
-
-
-      <div class="form-check my-3">
-  <input
+      <div class="form-check mt-3">
+    <input
     type="checkbox"
     id="isAddSame"
     class="form-check-input"
     formControlName="isAddSame">
 
-  <label class="form-check-label" for="isAddSame">
+    <label class="form-check-label" for="isAddSame">
     Current Address and Permanent Address are Same
-  </label>
-</div>
+    </label>
+    </div>
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        class="mt-4">
-        {{ isInEditMode ? 'Update User' : 'Add User' }}
+      <button  *ngIf="!isInEditMode"mat-raised-button color="primary"class="mt-4"> Add User
       </button>
+      <button 
+      (click)="onUserUpdate()"
+      
+       *ngIf="isInEditMode" mat-raised-button color="warn">Update button</button>
 
     </form>
 
