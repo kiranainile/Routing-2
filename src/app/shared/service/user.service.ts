@@ -11,11 +11,11 @@ export class UserService{
   
    userArr: Array <IUser>= [
   {
-    userName: 'kiran Ainile',
+    userName: 'Shivani',
     userId: '101',
     userRole: 'Candidate',
     profileDescription: 'Angular Developer with 3 years experience',
-    profileImage: 'assets/profileImage.png',
+    profileImage: 'assets/her.jpg',
     skills: ['Angular', 'TypeScript', 'JavaScript', 'Bootstrap'],
     experienceYears: '1 to 3 years',
     isActive: true,
@@ -36,7 +36,7 @@ export class UserService{
     isAddSame: false
     },
   {
-    userName: 'Akash Ainile',
+    userName: 'Raj',
     userId: '102',
     userRole: 'Admin',
     profileDescription: 'Frontend Team Lead',

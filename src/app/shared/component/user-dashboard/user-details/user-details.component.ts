@@ -30,11 +30,14 @@ export class UserDetailsComponent implements OnInit {
   }
 
   fetchUserDetails() {
-    this.userId = this._routes.snapshot.paramMap.get('userId')!;
+    this._routes.paramMap.subscribe(params => {
 
-    if (this.userId) {
-      this._userService.fetchUserById(this.userId)
-        .subscribe({
+      const id = params.get('userId');
+
+      if (id) {
+        this.userId = id;
+
+        this._userService.fetchUserById(this.userId).subscribe({
           next: (data) => {
             this.UserDetails = data;
           },
@@ -42,7 +45,9 @@ export class UserDetailsComponent implements OnInit {
             console.log(err);
           }
         });
-    }
+      }
+
+    });
   }
 
   onRemoveUser() {
@@ -58,16 +63,15 @@ export class UserDetailsComponent implements OnInit {
     matRef.afterClosed().subscribe(result => {
 
       if (result) {
-        this._userService.removeUserById(this.userId)
-          .subscribe({
-            next: (res) => {
-              this._snackbar.openSnackBar(res.msg);
-              this._router.navigate(['/users']);
-            },
-            error: (err) => {
-              console.log(err);
-            }
-          });
+        this._userService.removeUserById(this.userId).subscribe({
+          next: (res) => {
+            this._snackbar.openSnackBar(res.msg);
+            this._router.navigate(['/users']);
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        });
       }
 
     });

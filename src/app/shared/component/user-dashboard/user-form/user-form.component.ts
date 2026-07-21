@@ -48,11 +48,8 @@ userId!:string
         next:res=>{
          this.editUser=res;
          this.userForm.patchValue({...this.editUser})
-         if(res.userRole === "Candidate"){
-          this.userForm.disable()
-         }else{
-          this.userForm.enable()
-         }
+                   this.userForm.enable();
+
              this._formutility.pathFormArr(res.skills,this.skillsArr)
            
              if(this.formControls['address'].get('current')?.valid){
@@ -91,7 +88,9 @@ patchskills(dataArr:Array<any>,formArr:FormArray){
 
          })
 }
-
+removeSkill(index: number): void {
+  this.skillsArr.removeAt(index);
+}
 
   isAddSameHandler(){
     

@@ -1,8 +1,9 @@
+<body>
 <div class="row">
   <div class="col-12 text-end">
     <button
       routerLink="/products/addproduct"
-      class="btn btn-primary"
+      class="btn btn-primary mt-3"
       style="margin-right: 50px">
       Add Product
     </button>
@@ -16,6 +17,7 @@
       <li
         *ngFor="let product of products"
         [routerLink]="['/products', product.pid]"
+         routerLinkActive="active"
          [queryParams]="{cr:product.canReturn}"
         class="list-group-item">
 
@@ -40,3 +42,4 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+</body>

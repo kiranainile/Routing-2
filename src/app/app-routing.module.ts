@@ -9,26 +9,33 @@ import { ProductFormComponent } from "./shared/component/products-dashboard/prod
 import { UserFormComponent } from "./shared/component/user-dashboard/user-form/user-form.component";
 import { UserDetailsComponent } from "./shared/component/user-dashboard/user-details/user-details.component";
 import { PageNotFoundComponent } from "./shared/component/page-not-found/page-not-found.component";
+import { FairDetailsComponent } from "./shared/component/fairs-dashboard/fair-details/fair-details.component";
+import { AuthComponent } from "./shared/component/auth/auth.component";
 
 
 
 //http://localhost:4200 //baseurl
 const routes: Routes= [
     {
+        path:'',
+        component:AuthComponent
+    },
+
+
+    {
         path:'home',//http://localhost:4200
         component:HomeDashboardComponent
     },
-    {
-        path:'',
-       redirectTo:'home',
-       pathMatch:'full'
-    },
+    // {
+    //     path:'',
+    //    redirectTo:'home',
+    //    pathMatch:'full'
+    // },
    
      {
         path:'users',
         component:UserDashboardComponent,
         children:[{
-
              
         path:'addUser',
         component:UserFormComponent
@@ -41,6 +48,10 @@ const routes: Routes= [
         path:':userId/edit',    ///edit mode mai hoga
         component:UserFormComponent
     },
+
+        
+
+
         ]
     },
     
@@ -48,9 +59,8 @@ const routes: Routes= [
         path:'products',
         component:ProductsDashboardComponent,
         children:[
-
-{
-        path:'addproduct',
+            {
+        path:'addProduct',
         component:ProductFormComponent
     },
      {
@@ -62,17 +72,21 @@ const routes: Routes= [
         path:':productId/edit',
         component:ProductFormComponent
     },
-
+     
         ]
     },
     
-     
     {
         path:'fairs',
-        component:FairsDashboardComponent
+        component:FairsDashboardComponent,
+        children:[
+            {
+                path:':fairId',
+                component:FairDetailsComponent
+            }
+        ]
     },
-  
-   
+
 {
     path:'page-not-found',
     component:PageNotFoundComponent
@@ -82,12 +96,6 @@ const routes: Routes= [
     path:'**',
     redirectTo:'page-not-found'
 }
-
-
-
-
-
-
 
     
 ]
@@ -99,7 +107,6 @@ const routes: Routes= [
 
 
 export class AppRoutingModule{
-
 
 }
 

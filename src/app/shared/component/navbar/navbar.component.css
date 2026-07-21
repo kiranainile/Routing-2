@@ -1,4 +1,4 @@
-
+/* 
 
 
 
@@ -9,4 +9,32 @@
     color: orange;
 
     
+}
+.navbar-nav .nav-link {
+    color: #ffffff !important;   /* Apna color */
+/* } */
+.navbar {
+  background-color: #198754;
+  padding: 10px 20px;
+}
+
+.navbar-brand {
+  color: #fff !important;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+  color: #fff !important;
+  margin: 0 8px;
+  transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffd54f !important;
+}
+
+.nav-item.active .nav-link {
+  color: #ffeb3b !important;
+  font-weight: bold;
 }
